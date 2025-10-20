@@ -4,44 +4,72 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mapa Conceptual — Semilleros (Versión Mejorada)</title>
-  <style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Indie+Flower&family=Permanent+Marker&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Nunito:wght@700;800&family=Fredoka:wght@600&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+ <style>
     *{box-sizing:border-box;margin:0;padding:0}
     html,body,#app{height:100%}
 
-    body{
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 50%, #e0f7fa 100%);
-      color: #0f172a;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
+  body{
+  font-family: "Poppins", sans-serif;
+  background: 
+    linear-gradient(90deg, rgba(200,200,200,0.15) 1px, transparent 1px),
+    linear-gradient(rgba(200,200,200,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(150,150,150,0.08) 1px, transparent 1px),
+    linear-gradient(rgba(150,150,150,0.08) 1px, transparent 1px),
+    #f8f9fa;
+  background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+  color: #0f172a;
+  overflow:hidden;
     }
 
     /* Header */
-    .header{
-      padding:40px 24px 18px;
-      background:transparent;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      border-bottom:1px solid rgba(15,23,42,0.08);
-    }
-    .brand h1{
-      font-size:30px;
-      font-weight:800;
-      color:#0b1220;
-      text-align:center;
-      letter-spacing:1px;
-    }
-    .brand p{
-      font-size:18px;
-      color:#475569;
-      text-align:center;
-    }
+   .header{
+  padding:10px 24px 18px;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  border-bottom:3px solid #ff006e;
+  border-bottom-style: dashed;
+}
+.brand h1{
+  font-size:50px;
+  font-weight:800;
+  color:transparent;
+  text-align:center;
+  letter-spacing:2px;
+  background: linear-gradient(135deg, #ff006e 0%, #ffbe0b 25%, #fb5607 50%, #8338ec 75%, #3a86ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+font-family: 'Indie Flower', cursive;
 
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+  filter: drop-shadow(0 4px 8px rgba(255,0,110,0.3));
+}
+.brand p{
+  font-size:20px;
+  color:#334155;
+  text-align:center;
+font-family: 'Shadows Into Light', cursive;
+  font-style: italic;
+
+}
     .main{flex:1;display:flex;overflow:hidden;position:relative}
-    .canvas-wrapper{flex:1;position:relative;padding:20px;overflow:hidden}
+    .canvas-wrapper{
+  flex:1;
+  position:relative;
+  padding:20px;
+  overflow:hidden;
+  cursor: grab;
+}
+.canvas-wrapper.dragging{
+  cursor: grabbing;
+}
     svg#mapCanvas{width:100%;height:100%;display:block}
 
     /* Control bar */
@@ -117,7 +145,8 @@
   height: 60px;
   padding: 0;
   border-radius: 50%;
-  background: #22c55e; /* verde */
+ background:  #3a86ff;
+ opacity:80% ;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,8 +186,9 @@
 }
 
 
+
     /* Modal */
-        .modal{position:fixed;inset:0;display:none;align-items:flex-start;justify-content:center;padding:28px;z-index:120}
+    .modal{position:fixed;inset:0;display:none;align-items:flex-start;justify-content:center;padding:28px;z-index:120}
     .modal.active{display:flex}
     .modal-backdrop{position:absolute;inset:0;background:rgba(10,15,25,0.35);backdrop-filter: blur(3px)}
     .modal-card{
@@ -181,10 +211,13 @@
       color:#fff;
     }
     .modal-emoji{font-size:28px}
-    .modal-title{font-weight:700;font-size:18px}
+    .modal-title{font-weight:700;font-size:25px; font-family: 'Quicksand', sans-serif;}
     .modal-body{
       padding:18px 24px 24px;
       color:#0f172a;font-size:15px;line-height:1.6;
+       font-size: 15px;
+  line-height: 1.6;
+  font-family: 'Quicksand', sans-serif;
     }
     .modal-body h4 {
       font-size:17px;
@@ -192,28 +225,65 @@
       margin-bottom:8px;
       color:#0f172a;
       display:flex;align-items:center;gap:6px;
+      font-family: 'Quicksand', sans-serif;
     }
     .modal-body p {
       margin-bottom:10px;
       color:#334155;
+      font-family: 'Quicksand', sans-serif;
     }
     .modal-body ul {
       list-style:none;padding-left:14px;
     }
-    .modal-body li {
-      margin-bottom:6px;
-      position:relative;
-      padding-left:18px;
-      color:#475569;
-      font-size:14px;
-    }
-    .modal-body li::before {
-      content:"🌿";
-      position:absolute;
-      left:0;
-      top:0;
-      font-size:13px;
-    }
+ .modal-body ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-body li {
+  position: relative;
+  padding: 12px 16px 12px 48px;
+  color: #1e293b;
+  font-size: 14px;
+  line-height: 1.6;
+  background: linear-gradient(135deg, rgba(255, 190, 11, 0.08), rgba(131, 56, 236, 0.08));
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-family: 'Quicksand', sans-serif;
+  overflow: hidden;
+}
+
+.modal-body li::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, #ff006e 0%, #ffbe0b 25%, #fb5607 50%, #8338ec 75%, #3a86ff 100%);
+}
+
+.modal-body li:hover {
+  transform: translateX(8px);
+  background: linear-gradient(135deg, rgba(255, 190, 11, 0.15), rgba(131, 56, 236, 0.15));
+  box-shadow: 0 4px 12px rgba(131, 56, 236, 0.2);
+}
+
+.modal-body li::before {
+  content: "🌿";
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  z-index: 1;
+}
     .modal-footer {
       padding:14px 20px;
       display:flex;justify-content:flex-end;
@@ -233,10 +303,24 @@
     }
     .emoji-badge{font-size:16px}
 
-    .connector-label{
-      font-size:12px;fill:#334155;font-weight:600;
-      transform: translateY(9px)
-    }
+  .connector-label{
+  font-size: 13px;
+  margin-left: 30px;
+  fill: #8338ec;
+  font-weight: 500;
+  transform: translateY(9px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(131, 56, 236, 0.3));
+}
+
+.connector-label:hover{
+  fill: #ff006e;
+  font-size: 15px;
+  font-weight: 700;
+  filter: drop-shadow(0 4px 10px rgba(255, 0, 110, 0.6));
+  transform: translateY(9px) ;
+}
 
     @media (max-width:720px){
       .instructions{max-width:90%;left:10px;bottom:10px}
@@ -255,14 +339,15 @@
   filter: brightness(1.1);
 }
 
-  </style>
+  </style>>
 </head>
 <body>
   <div id="app">
     <header class="header">
       <div class="brand">
-        <h1>🌿 Semilleros de Investigación</h1>
-        <p>Mapa conceptual interactivo con diseño renovado</p>
+        <h1>🌿 Semilleros de Investigación 🌿</h1>
+        <p>UNA PRÁCTICA 
+PARA EL DESARROLLO CIENTÍFICO DE LAS NACIONES</p>
       </div>
     </header>
 
@@ -421,7 +506,7 @@
                         'Mejoramiento de calidad de vida'
                     ]
                 }},
-      { id: 'metodologia', label: 'Metodología de Trabajo', x: 200, y: 480, shape: 'oval', color: '#8338ec', emoji: '🔬',   info: {
+      { id: 'metodologia', label: 'Metodología ', x: 200, y: 480, shape: 'oval', color: '#8338ec', emoji: '🔬',   info: {
     title: ' Metodología de Trabajo',
     description: 'Los semilleros de investigación emplean metodologías activas e interdisciplinarias que promueven el aprendizaje colaborativo, la creatividad y la aplicación práctica del conocimiento en la solución de problemas reales.',
     details: [
@@ -458,7 +543,7 @@
 
     const connections = [
       { from: 'main', to: 'caracteristicas', label: 'posee' },
-      { from: 'main', to: 'objetivos', label: 'busca' },
+      { from: 'main', to: 'objetivos', label: 'tiene' },
       { from: 'main', to: 'impacto', label: 'genera' },
       { from: 'caracteristicas', to: 'estructura', label: 'desarrolla' },
       { from: 'caracteristicas', to: 'participantes', label: 'integra' },
@@ -487,7 +572,7 @@
   marker.setAttribute('orient', 'auto');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('d', 'M0,0 L10,3 L0,6 Z');
-  path.setAttribute('fill', '#94a3b8');
+  path.setAttribute('fill', '#8338ec');
   path.setAttribute('opacity', '0.7');
   marker.appendChild(path);
   defs.appendChild(marker);
@@ -505,9 +590,11 @@
     line.setAttribute('y1', a.y);
     line.setAttribute('x2', b.x);
     line.setAttribute('y2', b.y);
-    line.setAttribute('stroke', '#cbd5e1');
-    line.setAttribute('stroke-width', 2);
-    line.setAttribute('marker-end', 'url(#arrowhead)');
+   line.setAttribute('stroke', '#495057'); // 
+line.setAttribute('stroke-width', 1); // 👈 MÁS GRUESA
+line.setAttribute('opacity', '0.7');
+line.setAttribute('marker-end', 'url(#arrowhead)');
+
     g.appendChild(line);
 
     const midX = (a.x + b.x) / 2, midY = (a.y + b.y) / 2;
@@ -572,6 +659,7 @@ group.appendChild(emoji);
     div.style.display = 'flex';
     div.style.alignItems = 'center';
     div.style.justifyContent = 'center';
+    div.style.fontFamily = 'Quicksand, sans-serif'; 
     div.style.fontSize = '13px';
     div.style.fontWeight = '700';
     div.style.textAlign = 'center';
@@ -675,8 +763,9 @@ drawMap(); // ← ✅ MUY IMPORTANTE: llama la función al cargar
   div.style.flexDirection = 'column';
   div.style.alignItems = 'center';
   div.style.justifyContent = 'center';
-  div.style.fontSize = '13px';
-  div.style.fontWeight = '700';
+ div.style.fontFamily = 'Quicksand, sans-serif';
+div.style.fontSize = '14px';
+div.style.fontWeight = '700';
   div.style.textAlign = 'center';
   div.style.color = '#071126';
   div.style.lineHeight = '1.2';
@@ -746,10 +835,17 @@ instr.addEventListener('click', () => {
     function zoomOut(){scale=Math.max(scale-0.2,0.6);updateZoom();drawMap();}
     function resetView(){scale=1;panX=0;panY=0;updateZoom();drawMap();}
     function updateZoom(){document.getElementById('zoomPercent').textContent=Math.round(scale*100);}
-    wrapper.addEventListener('mousedown',e=>{if(e.target.closest('.node'))return;isDragging=true;dragStartX=e.clientX-panX;dragStartY=e.clientY-panY;});
-    window.addEventListener('mousemove',e=>{if(isDragging){panX=e.clientX-dragStartX;panY=e.clientY-dragStartY;drawMap();}});
-    window.addEventListener('mouseup',()=>isDragging=false);
-    window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+wrapper.addEventListener('mousedown',e=>{
+  if(e.target.closest('.node'))return;
+  isDragging=true;
+  wrapper.classList.add('dragging');
+  dragStartX=e.clientX-panX;
+  dragStartY=e.clientY-panY;
+});    window.addEventListener('mousemove',e=>{if(isDragging){panX=e.clientX-dragStartX;panY=e.clientY-dragStartY;drawMap();}});
+window.addEventListener('mouseup',()=>{
+  isDragging=false;
+  wrapper.classList.remove('dragging');
+});    window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
     updateZoom();drawMap();
   </script>
